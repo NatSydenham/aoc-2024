@@ -15,4 +15,5 @@ func main() {
 	day3.ExecutePart1()
 	day3.ExecutePart2()
 	day4.ExecutePart1()
+	day4.ExecutePart2()
 }
