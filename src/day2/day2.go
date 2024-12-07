@@ -73,7 +73,7 @@ func ExecutePart2() {
 		if safe {
 			sum++
 		} else {
-			for i, _ := range val {
+			for i := range val {
 				updated := slice.RemoveAt(val, i)
 				safeAfterAdjust := isSafe(updated)
 				if safeAfterAdjust {
