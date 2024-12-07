@@ -7,13 +7,13 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/NatSydenham/aoc-2024/lib/files"
+	"github.com/NatSydenham/aoc-2024/lib/file"
 )
 
 func getValues() ([]int, []int) {
-	lines := files.Readfilelines("./data/day1.txt")
-	
-	var first  []int
+	lines := file.Readlines("./data/day1.txt")
+
+	var first []int
 	var second []int
 	for _, line := range lines {
 		split := strings.Split(line, "   ")
@@ -26,7 +26,7 @@ func getValues() ([]int, []int) {
 	return first, second
 }
 
-func ExecutePart1(){
+func ExecutePart1() {
 	first, second := getValues()
 	sort.Ints(first)
 	sort.Ints(second)
@@ -43,7 +43,7 @@ func ExecutePart1(){
 	fmt.Println(sum)
 }
 
-func ExecutePart2(){
+func ExecutePart2() {
 	first, second := getValues()
 	count := make(map[int]int)
 

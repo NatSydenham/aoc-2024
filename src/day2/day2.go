@@ -5,12 +5,12 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/NatSydenham/aoc-2024/lib/files"
+	"github.com/NatSydenham/aoc-2024/lib/file"
 	"github.com/NatSydenham/aoc-2024/lib/slice"
 )
 
 func isOutOfRange(prev int, curr int) bool {
-	return prev == curr || prev - curr < -3 || prev - curr > 3
+	return prev == curr || prev-curr < -3 || prev-curr > 3
 }
 
 func isOutOfOrder(prev int, curr int, isIncreasing bool) bool {
@@ -25,7 +25,7 @@ func isSafe(line []int) bool {
 			isIncreasing = line[i] < line[i+1]
 			continue
 		}
-		if isOutOfRange(line[i - 1], num) || isOutOfOrder(line[i - 1], num, isIncreasing) {
+		if isOutOfRange(line[i-1], num) || isOutOfOrder(line[i-1], num, isIncreasing) {
 			return false
 		}
 	}
@@ -34,7 +34,7 @@ func isSafe(line []int) bool {
 }
 
 func ExecutePart1() {
-	lines := files.Readfilelines("./data/day2.txt")
+	lines := file.Readlines("./data/day2.txt")
 
 	sum := 0
 
@@ -56,11 +56,11 @@ func ExecutePart1() {
 }
 
 func ExecutePart2() {
-	lines := files.Readfilelines("./data/day2.txt")
+	lines := file.Readlines("./data/day2.txt")
 
 	sum := 0
 	for _, line := range lines {
-		
+
 		strLine := strings.Split(line, " ")
 		val := make([]int, len(strLine))
 
@@ -69,6 +69,7 @@ func ExecutePart2() {
 		}
 
 		safe := isSafe(val)
+
 		if safe {
 			sum++
 		} else {
@@ -77,7 +78,7 @@ func ExecutePart2() {
 				safeAfterAdjust := isSafe(updated)
 				if safeAfterAdjust {
 					sum++
-					break;
+					break
 				}
 			}
 		}

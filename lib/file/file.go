@@ -1,16 +1,15 @@
-package files
+package file
 
 import (
 	"bufio"
-	"fmt"
 	"os"
 )
 
-func Readfilelines(path string) []string {
+func Readlines(path string) []string {
 	readFile, err := os.Open(path)
 
 	if err != nil {
-		fmt.Println(err)
+		panic(err)
 	}
 
 	scanner := bufio.NewScanner(readFile)
