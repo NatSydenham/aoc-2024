@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/NatSydenham/aoc-2024/lib/file"
 	"github.com/NatSydenham/aoc-2024/lib/slice"
@@ -34,6 +35,7 @@ func isSafe(line []int) bool {
 }
 
 func ExecutePart1() {
+	start := time.Now()
 	lines := file.Readlines("./data/day2.txt")
 
 	sum := 0
@@ -52,10 +54,11 @@ func ExecutePart1() {
 		}
 	}
 
-	fmt.Println(sum)
+	fmt.Println(sum, "|", time.Since(start))
 }
 
 func ExecutePart2() {
+	start := time.Now()
 	lines := file.Readlines("./data/day2.txt")
 
 	sum := 0
@@ -84,6 +87,6 @@ func ExecutePart2() {
 		}
 	}
 
-	fmt.Println(sum)
+	fmt.Println(sum, "|", time.Since(start))
 
 }

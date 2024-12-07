@@ -5,6 +5,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/NatSydenham/aoc-2024/lib/file"
 )
@@ -24,16 +25,18 @@ func calcSum(input []string) int {
 }
 
 func ExecutePart1() {
+	start := time.Now()
 	input := strings.Join(file.
 		Readlines("./data/day3.txt"), "")
 	r := regexp.
 		MustCompile("mul\\(\\d+,\\d+\\)")
 	matches := r.FindAllString(input, -1)
 	sum := calcSum(matches)
-	fmt.Println(sum)
+	fmt.Println(sum, "|", time.Since(start))
 }
 
 func ExecutePart2() {
+	start := time.Now()
 	input := strings.Join(file.Readlines("./data/day3.txt"), "")
 	validInstructions := regexp.MustCompile("don't\\(\\).*").
 		ReplaceAllString(
@@ -42,5 +45,5 @@ func ExecutePart2() {
 	r := regexp.MustCompile("mul\\(\\d+,\\d+\\)")
 	matches := r.FindAllString(validInstructions, -1)
 	sum := calcSum(matches)
-	fmt.Println(sum)
+	fmt.Println(sum, "|", time.Since(start))
 }

@@ -6,6 +6,7 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/NatSydenham/aoc-2024/lib/file"
 )
@@ -27,6 +28,7 @@ func getValues() ([]int, []int) {
 }
 
 func ExecutePart1() {
+	start := time.Now()
 	first, second := getValues()
 	sort.Ints(first)
 	sort.Ints(second)
@@ -39,11 +41,11 @@ func ExecutePart1() {
 		distance := max - min
 		sum += distance
 	}
-
-	fmt.Println(sum)
+	fmt.Println(sum, "|", time.Since(start))
 }
 
 func ExecutePart2() {
+	start := time.Now()
 	first, second := getValues()
 	count := make(map[int]int)
 
@@ -65,5 +67,5 @@ func ExecutePart2() {
 		}
 	}
 
-	fmt.Println(sum)
+	fmt.Println(sum, "|", time.Since(start))
 }

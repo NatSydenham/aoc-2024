@@ -2,6 +2,7 @@ package day4
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/NatSydenham/aoc-2024/lib/file"
 )
@@ -35,6 +36,7 @@ func checkXdash(input []string, line int, pos int) bool {
 }
 
 func ExecutePart1() {
+	start := time.Now()
 	input := file.Readlines("./data/day4.txt")
 	sum := 0
 
@@ -52,10 +54,11 @@ func ExecutePart1() {
 		}
 	}
 
-	fmt.Println(sum)
+	fmt.Println(sum, "|", time.Since(start))
 }
 
 func ExecutePart2() {
+	start := time.Now()
 	input := file.Readlines("./data/day4.txt")
 	sum := 0
 
@@ -67,5 +70,5 @@ func ExecutePart2() {
 		}
 	}
 
-	fmt.Println(sum)
+	fmt.Println(sum, "|", time.Since(start))
 }

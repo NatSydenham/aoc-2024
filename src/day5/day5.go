@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/NatSydenham/aoc-2024/lib/file"
 	"github.com/NatSydenham/aoc-2024/lib/slice"
@@ -36,6 +37,7 @@ func check(rule []int, line []int) bool {
 }
 
 func ExecutePart1() {
+	start := time.Now()
 	rules, input := getInput()
 	sum := 0
 
@@ -54,12 +56,15 @@ func ExecutePart1() {
 		}
 	}
 
-	fmt.Println(sum)
+	fmt.Println(sum, "|", time.Since(start))
 }
 
 func ExecutePart2() {
+	start := time.Now()
 	rules, input := getInput()
 	sum := 0
+
+	swaps := 0
 
 	for _, line := range input {
 		passesAllRules := true
@@ -73,6 +78,7 @@ func ExecutePart2() {
 					shouldCheck = true
 					aPos, bPos := slice.IndexOf(rule[0], line), slice.IndexOf(rule[1], line)
 					line[aPos], line[bPos] = line[bPos], line[aPos]
+					swaps++
 				}
 			}
 		}
@@ -82,5 +88,5 @@ func ExecutePart2() {
 		}
 	}
 
-	fmt.Println(sum)
+	fmt.Println(sum, "|", time.Since(start), "|", swaps, "swaps")
 }
