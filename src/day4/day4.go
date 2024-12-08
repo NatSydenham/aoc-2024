@@ -4,12 +4,9 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/NatSydenham/aoc-2024/lib/coordinate"
 	"github.com/NatSydenham/aoc-2024/lib/file"
 )
-
-type Coordinate struct {
-	x, y int
-}
 
 func check(input []string, char byte, line int, pos int) bool {
 	if line < 0 || line > len(input)-1 || pos > len(input[line])-1 || pos < 0 {
@@ -40,13 +37,13 @@ func ExecutePart1() {
 	input := file.Readlines("./data/day4.txt")
 	sum := 0
 
-	allDirections := [8]Coordinate{{-1, 0}, {-1, 1}, {0, 1}, {1, 1}, {1, 0}, {1, -1}, {0, -1}, {-1, -1}}
+	allDirections := [8]coordinate.Coordinate{{X: -1, Y: 0}, {X: -1, Y: 1}, {X: 0, Y: 1}, {X: 1, Y: 1}, {X: 1, Y: 0}, {X: 1, Y: -1}, {X: 0, Y: -1}, {X: -1, Y: -1}}
 
 	for lineno, line := range input {
 		for charidx, char := range line {
 			if char == 'X' {
 				for _, coords := range allDirections {
-					if checkXmas(input, lineno, charidx, coords.x, coords.y) {
+					if checkXmas(input, lineno, charidx, coords.X, coords.Y) {
 						sum++
 					}
 				}

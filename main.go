@@ -6,6 +6,7 @@ import (
 	"github.com/NatSydenham/aoc-2024/src/day3"
 	"github.com/NatSydenham/aoc-2024/src/day4"
 	"github.com/NatSydenham/aoc-2024/src/day5"
+	"github.com/NatSydenham/aoc-2024/src/day6"
 )
 
 func main() {
@@ -19,4 +20,6 @@ func main() {
 	day4.ExecutePart2()
 	day5.ExecutePart1()
 	day5.ExecutePart2()
+	day6.ExecutePart1()
+	day6.ExecutePart2()
 }
