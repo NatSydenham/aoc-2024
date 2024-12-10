@@ -3,6 +3,7 @@ package day6
 import (
 	"fmt"
 	"slices"
+	"sync"
 	"time"
 
 	"github.com/NatSydenham/aoc-2024/lib/coordinate"
@@ -62,11 +63,43 @@ func ExecutePart1() {
 	fmt.Println(len(visited), "|", time.Since(start))
 }
 
+func checkIfLoops(wg *sync.WaitGroup, mu *sync.Mutex, startPos coordinate.Coordinate, obstacleWalkerPos coordinate.Coordinate, loops *[]coordinate.Coordinate, newLines []string) {
+	defer wg.Done()
+
+	visited := make(map[coordinate.Coordinate][]coordinate.Coordinate)
+	guardPos := startPos
+	guardInBounds := true
+	guardDir := coordinate.Coordinate{X: 0, Y: -1}
+
+	// check if guard loops with added obstacle
+	for guardInBounds {
+		directions, hasVisited := visited[guardPos]
+		if !hasVisited {
+			newArr := make([]coordinate.Coordinate, 0)
+			visited[guardPos] = append(newArr, guardDir)
+		} else if !slices.Contains(directions, guardDir) {
+			visited[guardPos] = append(visited[guardPos], guardDir)
+		} else {
+			// we have a loop
+			if !slices.Contains(*loops, obstacleWalkerPos) {
+				mu.Lock()
+				*loops = append(*loops, obstacleWalkerPos)
+				mu.Unlock()
+			}
+			break
+		}
+		guardInBounds, guardPos, guardDir = step(newLines, guardPos, guardDir)
+	}
+}
+
 func ExecutePart2() {
 	start := time.Now()
 	lines := file.Readlines("./data/day6.txt")
 	loops := make([]coordinate.Coordinate, 0)
 	checked := make([]coordinate.Coordinate, 0)
+
+	var wg sync.WaitGroup
+	var mu sync.Mutex
 
 	obstacleWalkerPos := getStart(lines)
 	startPos := obstacleWalkerPos
@@ -75,7 +108,6 @@ func ExecutePart2() {
 	obstacleWalkerInBounds := true
 
 	for obstacleWalkerInBounds {
-
 		if slices.Contains(checked, obstacleWalkerPos) {
 			obstacleWalkerInBounds, obstacleWalkerPos, obstacleWalkerDir = step(lines, obstacleWalkerPos, obstacleWalkerDir)
 			continue
@@ -90,33 +122,15 @@ func ExecutePart2() {
 			newLines[obstacleWalkerPos.Y] = lineWithObs
 		}
 
-		visited := make(map[coordinate.Coordinate][]coordinate.Coordinate)
-		guardPos := startPos
-		guardInBounds := true
-		guardDir := coordinate.Coordinate{X: 0, Y: -1}
-
-		// check if guard loops with added obstacle
-		for guardInBounds {
-			directions, hasVisited := visited[guardPos]
-			if !hasVisited {
-				newArr := make([]coordinate.Coordinate, 0)
-				visited[guardPos] = append(newArr, guardDir)
-			} else if !slices.Contains(directions, guardDir) {
-				visited[guardPos] = append(visited[guardPos], guardDir)
-			} else {
-				// we have a loop
-				if !slices.Contains(loops, obstacleWalkerPos) {
-					loops = append(loops, obstacleWalkerPos)
-				}
-				break
-			}
-			guardInBounds, guardPos, guardDir = step(newLines, guardPos, guardDir)
-		}
+		wg.Add(1)
+		go checkIfLoops(&wg, &mu, startPos, obstacleWalkerPos, &loops, newLines)
 
 		// move the obstacle walker to next position in original guard path.
 		checked = append(checked, obstacleWalkerPos)
 		obstacleWalkerInBounds, obstacleWalkerPos, obstacleWalkerDir = step(lines, obstacleWalkerPos, obstacleWalkerDir)
 	}
+
+	wg.Wait()
 
 	fmt.Println(len(loops), "|", time.Since(start))
 }
