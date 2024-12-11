@@ -24,6 +24,31 @@ func getAntinodes(a coordinate.Coordinate, b coordinate.Coordinate) (coordinate.
 	return antinode1, antinode2
 }
 
+func getAntinodesInDirection(next coordinate.Coordinate, from coordinate.Coordinate, antinodes []coordinate.Coordinate, xLength int, yLength int) []coordinate.Coordinate {
+	for {
+		antinode := getNextAntinodeInDirection(next, from)
+		antinodeIsValid := isValidPosition(antinode, yLength, xLength)
+
+		if antinodeIsValid && !slices.Contains(antinodes, antinode) {
+			antinodes = append(antinodes, antinode)
+		}
+
+		if !antinodeIsValid {
+			break
+		}
+
+		from = next
+		next = antinode
+	}
+
+	return antinodes
+}
+
+func getNextAntinodeInDirection(next coordinate.Coordinate, from coordinate.Coordinate) coordinate.Coordinate {
+	vector := coordinate.Coordinate{X: from.X - next.X, Y: from.Y - next.Y}
+	return coordinate.Coordinate{X: next.X - vector.X, Y: next.Y - vector.Y}
+}
+
 func isValidPosition(antinode coordinate.Coordinate, linecount int, linelength int) bool {
 	return antinode.X >= 0 && antinode.X < linelength && antinode.Y >= 0 && antinode.Y < linecount
 }
@@ -82,4 +107,69 @@ func ExecutePart1() {
 	}
 
 	fmt.Println(len(antinodes), "|", time.Since(start))
+}
+
+func ExecutePart2() {
+	start := time.Now()
+	lines := file.Readlines("./data/day8.txt")
+
+	symbols := make(map[rune][]coordinate.Coordinate)
+
+	for lineNo, line := range lines {
+		for charNo, char := range line {
+			if char != '.' {
+				arr, exists := symbols[char]
+				if exists {
+					newArr := append(arr, coordinate.Coordinate{X: charNo, Y: lineNo})
+					symbols[char] = newArr
+				} else {
+					newArr := []coordinate.Coordinate{{X: charNo, Y: lineNo}}
+					symbols[char] = newArr
+				}
+			}
+		}
+	}
+
+	antinodes := []coordinate.Coordinate{}
+
+	for _, nodes := range symbols {
+		if len(nodes) == 1 {
+			continue
+		}
+
+		pairsDone := []Pair{}
+
+		for i1, node1 := range nodes {
+			for i2, node2 := range nodes {
+
+				if !slices.Contains(antinodes, node1) {
+					antinodes = append(antinodes, node1)
+				}
+
+				if !slices.Contains(antinodes, node2) {
+					antinodes = append(antinodes, node2)
+				}
+
+				eval := Pair{a: int(math.Min(float64(i1), float64(i2))), b: int(math.Max(float64(i1), float64(i2)))}
+
+				if i1 == i2 || slices.Contains(pairsDone, eval) {
+					continue
+				}
+
+				pairsDone = append(pairsDone, eval)
+
+				next1 := node1
+				from1 := node2
+
+				next2 := node2
+				from2 := node1
+
+				antinodes = getAntinodesInDirection(next1, from1, antinodes, len(lines[0]), len(lines))
+				antinodes = getAntinodesInDirection(next2, from2, antinodes, len(lines[0]), len(lines))
+			}
+		}
+	}
+
+	fmt.Println(len(antinodes), "|", time.Since(start))
+
 }

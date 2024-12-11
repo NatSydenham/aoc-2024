@@ -27,4 +27,5 @@ func main() {
 	day7.ExecutePart1()
 	day7.ExecutePart2()
 	day8.ExecutePart1()
+	day8.ExecutePart2()
 }
