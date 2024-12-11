@@ -8,6 +8,7 @@ import (
 	"github.com/NatSydenham/aoc-2024/src/day5"
 	"github.com/NatSydenham/aoc-2024/src/day6"
 	"github.com/NatSydenham/aoc-2024/src/day7"
+	"github.com/NatSydenham/aoc-2024/src/day8"
 )
 
 func main() {
@@ -25,4 +26,5 @@ func main() {
 	day6.ExecutePart2()
 	day7.ExecutePart1()
 	day7.ExecutePart2()
+	day8.ExecutePart1()
 }
