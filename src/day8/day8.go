@@ -158,14 +158,8 @@ func ExecutePart2() {
 
 				pairsDone = append(pairsDone, eval)
 
-				next1 := node1
-				from1 := node2
-
-				next2 := node2
-				from2 := node1
-
-				antinodes = getAntinodesInDirection(next1, from1, antinodes, len(lines[0]), len(lines))
-				antinodes = getAntinodesInDirection(next2, from2, antinodes, len(lines[0]), len(lines))
+				antinodes = getAntinodesInDirection(node1, node2, antinodes, len(lines[0]), len(lines))
+				antinodes = getAntinodesInDirection(node2, node1, antinodes, len(lines[0]), len(lines))
 			}
 		}
 	}
