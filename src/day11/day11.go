@@ -30,9 +30,7 @@ func getStones(nums []int, times int) map[int]int {
 		//reset the new additions map
 		numsToAdd = make(map[int]int, 0)
 
-		// process just one of each unique value, add counter if splitting.
 		for num, count := range counter {
-
 			asString := strconv.Itoa(num)
 
 			// add total count of 0s to total count of 1s, remove 0 as key from map.
